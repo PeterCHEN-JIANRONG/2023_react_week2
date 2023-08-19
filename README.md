@@ -1,4 +1,10 @@
-# React + Vite
+# 頁面
+
+react 練習, 商品列表, todolist
+
+- [頁面](https://peterchen-jianrong.github.io/2023_react_week2/)
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
