@@ -12,6 +12,7 @@ module.exports = {
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
   rules: {
+    // "react/prop-types": 'off', // 關閉元件 props validation 驗證
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
