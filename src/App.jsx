@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import CartTr from "./components/CartTr";
+import { useState } from "react";
+import ProductList from "./components/ProductList";
+import CartView from "./components/CartView";
 
 const initData = [
   {
@@ -55,9 +56,7 @@ const initData = [
 function App() {
   const [product, setProduct] = useState(initData);
   const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState(0)
-  const [remark, setRemark] =useState('')
-  const [order, setOrder] = useState({product:[], remark:'', price: 0})
+  const [order, setOrder] = useState({ product: [], remark: "", price: 0 });
 
   // 加入購物車
   const addCart = (product) => {
@@ -79,96 +78,15 @@ function App() {
     setCart(tempCart);
   };
 
-  // 總計
-  useEffect(()=>{
-    const sum = cart.reduce((acc, curr)=> acc+ curr.price*curr.qty, 0)
-    setTotal(sum)
-  }, [cart])
-
   return (
     <div id="root">
       <div className="container mt-5">
         <div className="row">
           <div className="col-md-4">
-            <div className="list-group">
-              {product.map((item) => {
-                return (
-                  <a
-                    key={item.id}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      addCart(item);
-                    }}
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    <div className="d-flex w-100 justify-content-between">
-                      <h5 className="mb-1">{item.name}</h5>
-                      <small>${item.price}</small>
-                    </div>
-                    <p className="mb-1">{item.description}</p>
-                  </a>
-                );
-              })}
-            </div>
+            <ProductList product={product} addCart={addCart} />
           </div>
           <div className="col-md-8">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col" width="50">
-                    操作
-                  </th>
-                  <th scope="col">品項</th>
-                  <th scope="col">描述</th>
-                  <th scope="col" width="90">
-                    數量
-                  </th>
-                  <th scope="col">單價</th>
-                  <th scope="col">小計</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cart.map((item, index) => {
-                  return (
-                    <CartTr key={item.id} item={item} cart={cart} setCart={setCart}/>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="text-end mb-3">
-              <h5>
-                總計: <span>${total}</span>
-              </h5>
-            </div>
-            <textarea
-              value={remark}
-              onChange={(e)=>{
-                setRemark(e.target.value)
-              }}
-              className="form-control mb-3"
-              rows="3"
-              placeholder="備註"
-            ></textarea>
-            <div className="text-end">
-              <button 
-              onClick={()=>{
-                if(!cart.length){
-                  return
-                }
-                // 送出訂單
-                setOrder({
-                  product: [...cart],
-                  remark,
-                  price: cart.reduce((a,b)=> a+b.price*b.qty, 0)
-                })
-                // 清除購物車
-                setCart([])
-                setRemark('')
-              }}
-              disabled={!cart.length}
-              className="btn btn-primary">送出</button>
-            </div>
+            <CartView cart={cart} setCart={setCart} setOrder={setOrder} />
           </div>
         </div>
         <hr />
@@ -187,14 +105,15 @@ function App() {
                       </tr>
                     </thead>
                     <tbody>
-                      {order.product.map((item)=>{
-                        return (<tr key={item.id}>
-                          <td>{item.name}</td>
-                          <td>{item.qty}</td>
-                          <td>{item.price*item.qty}</td>
-                        </tr>)
+                      {order.product.map((item) => {
+                        return (
+                          <tr key={item.id}>
+                            <td>{item.name}</td>
+                            <td>{item.qty}</td>
+                            <td>{item.price * item.qty}</td>
+                          </tr>
+                        );
                       })}
-                      
                     </tbody>
                   </table>
                   <div className="text-end">
